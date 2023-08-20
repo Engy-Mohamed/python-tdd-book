@@ -36,15 +36,31 @@ class MyVisitorTest(unittest.TestCase):
 
         table = self.browser.find_element(By.ID,"id_list_table")
         rows = table.find_elements(By.TAG_NAME,"tr")
-        self.assertTrue(any(row.text == "1:buy rice" for row in rows),
-                        "the new to-do item does not appear in the table")
+        self.assertIn(
+            "1:buy rice" ,
+            [row.text for row in rows]
+            )
 
 
         #there is still a text box inviting it to enter another item
         #she enters buy tomatos to make fatah
+        input_box = self.browser.find_element(By.ID,'id_new_item')
+        input_box.send_keys("buy tomatos")
+        input_box.send_keys(Keys.ENTER)
+        time.sleep(3)
 
         #the page updates again and now shows the two items in the list
-        self.fail("Finish the test")
+        table = self.browser.find_element(By.ID,"id_list_table")
+        rows = table.find_elements(By.TAG_NAME,"tr")
+        self.assertIn(
+            "1:buy rice" ,
+            [row.text for row in rows]
+            )
+        self.assertIn(
+            "2:buy tomatos" ,
+            [row.text for row in rows]
+            )
+        #self.fail("Finish the test")
         #she goes back to sleep
 
 if __name__ == "__main__":
