@@ -12,6 +12,17 @@ class MyVisitorTest(unittest.TestCase):
     
     def tearDown(self):
         self.browser.quit()
+
+    def  check_for_row_in_list_table(self,row_text):
+        table = self.browser.find_element(By.ID,"id_list_table")
+        rows = table.find_elements(By.TAG_NAME,"tr")
+        self.assertIn(
+            row_text ,
+            [row.text for row in rows]
+            )
+
+
+
     
     def test_can_start_a_todo_list(self):
         #she goes to check the home page
@@ -34,12 +45,8 @@ class MyVisitorTest(unittest.TestCase):
         input_box.send_keys(Keys.ENTER)
         time.sleep(3)
 
-        table = self.browser.find_element(By.ID,"id_list_table")
-        rows = table.find_elements(By.TAG_NAME,"tr")
-        self.assertIn(
-            "1:buy rice" ,
-            [row.text for row in rows]
-            )
+        self.check_for_row_in_list_table("1:buy rice")
+
 
 
         #there is still a text box inviting it to enter another item
@@ -50,16 +57,9 @@ class MyVisitorTest(unittest.TestCase):
         time.sleep(3)
 
         #the page updates again and now shows the two items in the list
-        table = self.browser.find_element(By.ID,"id_list_table")
-        rows = table.find_elements(By.TAG_NAME,"tr")
-        self.assertIn(
-            "1:buy rice" ,
-            [row.text for row in rows]
-            )
-        self.assertIn(
-            "2:buy tomatos" ,
-            [row.text for row in rows]
-            )
+        self.check_for_row_in_list_table("1:buy rice")
+        self.check_for_row_in_list_table("2:buy tomatos")
+        
         #self.fail("Finish the test")
         #she goes back to sleep
 
