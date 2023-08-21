@@ -88,6 +88,7 @@ class MyVisitorTest(LiveServerTestCase):
         self.browser.delete_all_cookies()
 
         # Mizo visits the home page, There is no sign of Edith's list
+        self.browser.get(self.live_server_url)
         page_text = self.browser.find_element(By.TAG_NAME,"body").text
         self.assertNotIn("buy rice", page_text)
         self.assertNotIn("make fatah", page_text)
