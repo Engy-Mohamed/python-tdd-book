@@ -18,7 +18,8 @@ from django.urls import path
 from lists import views
 
 urlpatterns = [
-    path(route="",view=views.home_page,name='home'),
-    path(route="lists/new",view=views.new_list,name='new_list'),
-    path(route="lists/the-only_list_in_the_world/",view=views.view_list,name='view_list'),
+    path("", views.home_page, name='home'),
+    path("lists/new", views.new_list, name='new_list'),
+    path("lists/<int:list_id>/", views.view_list, name='view_list'),
+    path("lists/<int:list_id>/add_item", views.add_item, name='add_item'),
 ]
