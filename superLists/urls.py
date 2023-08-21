@@ -15,8 +15,9 @@ Including another URLconf
 """
 #from django.conf.urls import url
 from django.urls import path
-from lists.views import home_page
+from lists import views
 
 urlpatterns = [
-    path(route="",view=home_page,name='home'),
+    path(route="",view=views.home_page,name='home'),
+    path(route="lists/the-only_list_in_the_world/",view=views.view_list,name='view_list'),
 ]

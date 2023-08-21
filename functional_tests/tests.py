@@ -88,7 +88,7 @@ class MyVisitorTest(LiveServerTestCase):
         self.browser.delete_all_cookies()
 
         # Mizo visits the home page, There is no sign of Edith's list
-        page_text = self.browser.find_element(By.TAG_NAME,"body")
+        page_text = self.browser.find_element(By.TAG_NAME,"body").text
         self.assertNotIn("buy rice", page_text)
         self.assertNotIn("make fatah", page_text)
 
@@ -105,7 +105,7 @@ class MyVisitorTest(LiveServerTestCase):
         self.assertNotEqual(edith_list_url, Mizo_list_url)
 
         # Again There is no trace to Edith's list
-        page_text = self.browser.find_element(By.TAG_NAME,"body")
+        page_text = self.browser.find_element(By.TAG_NAME,"body").text
         self.assertNotIn("buy rice", page_text)
         self.assertIn("buy milk", page_text)
 
