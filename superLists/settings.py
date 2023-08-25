@@ -26,7 +26,7 @@ SECRET_KEY = 'g^!0^6esoiobc)50$_4in-yv+(a#0#lyrsau(n=$woddnr3edj'
 if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = os.environ['SITENAME']
+    ALLOWED_HOSTS = [os.environ['SITENAME']]
 else:
     DEBUG = True
     SECRET_KEY = 'insecure-key-for-dev'
