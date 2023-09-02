@@ -14,14 +14,19 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # The home page refreshes and There is an error message
-        #  saying that the tist item can not be blank.
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element(By.CSS_SELECTOR,'.has-error').text,
-            "You can't add an empty list item"))
+        # The browser intercepts the request, and does not load
+        # the list page
+        self.wait_for(lambda: 
+            self.browser.find_element(By.CSS_SELECTOR,'#id_text:invalid')
+            )
 
-        # She tries again with some text for the item, which now works
+        # She tries again with some text for the item, and error disappears
         self.get_item_input_box().send_keys('Buy milk')
+        self.wait_for(lambda: 
+            self.browser.find_element(By.CSS_SELECTOR,'#id_text:valid')
+            )
+        
+         # She submits it successfully
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1:Buy milk')
 
@@ -29,14 +34,16 @@ class ItemValidationTest(FunctionalTest):
         # Perversely, She now decides to submit another blank item.
         self.get_item_input_box().send_keys(Keys.ENTER)
 
-        # She recieves a similar warning on the list page.
-        self.wait_for(lambda: self.assertEqual(
-            self.browser.find_element(By.CSS_SELECTOR,'.has-error').text,
-            "You can't add an empty list item"
-        ))
+        # Again the browser will comply
+        self.wait_for(lambda: 
+            self.browser.find_element(By.CSS_SELECTOR,'#id_text:invalid')
+            )
 
         # She can correct it by filling some text in.
         self.get_item_input_box().send_keys('Make tea')
+        self.wait_for(lambda: 
+            self.browser.find_element(By.CSS_SELECTOR,'#id_text:valid')
+            )
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1:Buy milk')
         self.wait_for_row_in_list_table('2:Make tea')
