@@ -81,10 +81,10 @@ class LoginViewTest(TestCase):
 
 
     def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):  
-        self.client.get('/accounts/login?token=abcd123')
+        response = self.client.get('/accounts/login?token=abcd123')
         self.assertEqual(
             mock_auth.authenticate.call_args,  
-            call(uid='abcd123') 
+            call(request=response.wsgi_request, uid='abcd123') 
         )
 
      
