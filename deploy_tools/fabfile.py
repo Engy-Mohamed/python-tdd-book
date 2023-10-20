@@ -38,6 +38,8 @@ def _update_static_files():
     run('./virtualenv/bin/python manage.py collectstatic --noinput')
 
 def _update_database():
+    #just for test Engy
+    run('rm db.sqlite3')
     run('./virtualenv/bin/python manage.py migrate --noinput')
 
 def deploy():
