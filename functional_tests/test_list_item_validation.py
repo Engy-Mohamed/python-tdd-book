@@ -70,11 +70,10 @@ class ItemValidationTest(FunctionalTest):
         ))     
 
     def test_error_messages_are_cleared_on_input(self):
-        # Edith starts a list and causes a validation error:
+        # Aysha starts a list and causes a validation error:
         self.browser.get(self.live_server_url)  
-        self.get_item_input_box().send_keys('Buy carrots')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table('1:Buy carrots')
+      
+        self.add_list_item('Buy carrots')
         self.get_item_input_box().send_keys('Buy carrots')
         self.get_item_input_box().send_keys(Keys.ENTER)
 

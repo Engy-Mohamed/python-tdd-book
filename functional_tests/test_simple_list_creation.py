@@ -48,10 +48,8 @@ class NewVisitorTest(FunctionalTest):
         
         #Edith starts a new to-do list
         self.browser.get(self.live_server_url)
-        input_box = self.get_item_input_box()
-        input_box.send_keys("buy rice")
-        input_box.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table("1:buy rice")
+       
+        self.add_list_item("buy rice")
 
         #she notices that her list has a uniqe url
         edith_list_url = self.browser.current_url
@@ -70,11 +68,10 @@ class NewVisitorTest(FunctionalTest):
         self.assertNotIn("make fatah", page_text)
 
         # Mizo starts a new list by adding an item
-        # He is less interesting than Edith
-        input_box = self.get_item_input_box()
-        input_box.send_keys("buy milk")
-        input_box.send_keys(Keys.ENTER)
-        self.wait_for_row_in_list_table("1:buy milk")
+        # He is less interesting than Aysha
+        
+        self.add_list_item("buy milk")
+    
 
         # Mizo gets his own uniqe url
         Mizo_list_url = self.browser.current_url
