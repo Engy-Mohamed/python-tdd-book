@@ -45,7 +45,7 @@ class MyListsTest(FunctionalTest):
         self.wait_for(
             lambda: self.browser.find_element(By.LINK_TEXT, 'Set the stuff')
         )
-        self.browser.find_element(By.LINK_TEXT, 'Tide the things').click()
+        self.browser.find_element(By.LINK_TEXT, 'Set the stuff').click()
         self.wait_for(
             lambda: self.assertEqual(self.browser.current_url, first_list_url)
         )
@@ -58,7 +58,7 @@ class MyListsTest(FunctionalTest):
         # Under "my lists", her new list appears
         self.browser.find_element(By.LINK_TEXT, 'My lists').click()
         self.wait_for(
-            lambda: self.browser.find_element_by_link_text('Add a topic')
+            lambda: self.browser.find_element(By.LINK_TEXT, 'Add a topic')
         )
         self.browser.find_element(By.LINK_TEXT, 'Add a topic').click()
         self.wait_for(
