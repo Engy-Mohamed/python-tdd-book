@@ -4,11 +4,18 @@ from django.conf import settings
 
 class List(models.Model):
 
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
         blank=True, null=True, 
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE, 
+        related_name='owner_user'
         )
+ 
+    shared_with = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, 
+        related_name='shared_with_user'
+    )
     
     def get_absolute_url(self):
         return reverse('view_list', args=[self.id])

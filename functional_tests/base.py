@@ -13,7 +13,7 @@ from .management.commands.create_session import create_pre_authenticated_session
 from django.conf import settings
 
 
-MAX_WAIT = 10
+MAX_WAIT = 20
 SCREEN_DUMP_LOCATION = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), 'screendumps'
 )

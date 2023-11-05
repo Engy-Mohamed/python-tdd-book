@@ -10,3 +10,22 @@
     {% endfor %}
   </table>
 {% endblock %}
+{% block share_list %}
+  <form class="navbar-form navbar-right"
+                    method="POST"
+                    action="{% url 'share_list' list.id %}">
+    <span>Share this list</span>
+    <input class="form-control" name="share_email" type="text" placeholder="your-friend@example.com"/>
+    {% csrf_token %}
+  </form>
+{% endblock %}
+{% block extra_content %}
+    <h2>The list owner : </h2>
+    <span id="id_list_owner">{{ list.owner.email }}</span>
+    <h3>List shared with :</h3>  
+    <ul>
+        {% for user in list.shared_with.all %}  
+            <li class='list-share'>{{ user.email }}</li>  
+        {% endfor %}
+    </ul>
+{% endblock %}

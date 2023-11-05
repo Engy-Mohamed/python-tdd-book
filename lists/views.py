@@ -30,6 +30,8 @@ def view_list(request, list_id):
             return redirect(list_)
         
     return render(request,"list.html", 
+                  
+
                   {"list" : list_, "form" : form})
 
 
@@ -43,7 +45,16 @@ def new_list(request):
 
 def my_lists(request, email):
     owner = User.objects.get(email=email)
-    return render(request, 'my_lists.html', {'owner': owner})
+    shared_lists = List.objects.filter(shared_with=owner).all()
+    return render(request, 'my_lists.html', {'owner': owner,'shared_lists':shared_lists })
+
+def share_list(request, list_id):
+
+    share_with_email = request.POST.get('share_email')
+    list_ = List.objects.get(id=list_id)
+    user_ = User.objects.get(email=share_with_email)
+    list_.shared_with.add(user_)
+    return redirect(list_)
 
 
 

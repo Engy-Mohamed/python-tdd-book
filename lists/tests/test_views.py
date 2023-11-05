@@ -123,6 +123,13 @@ class ListViewTest(TestCase):
         response = self.post_invalid_input()
         self.assertIsInstance(response.context['form'], ExistingListItemForm)
 
+    def display_the_owner_of_the_list(self):
+        user = User.objects.create(email="a@b.com")
+        _list = List.create_new(first_item_text='new item text', owner=user)
+        response = self.client.get(f'/lists/{_list.id}/')
+
+        self.assertContains(response,"a@b.com")
+
         
 class NewListViewIntegratedTest(TestCase):
 
@@ -145,6 +152,9 @@ class NewListViewIntegratedTest(TestCase):
         list_ = List.objects.first()
         self.assertEqual(list_.owner, user)
 
+    
+    
+
 class MyListsTest(TestCase):
 
     def test_my_lists_url_renders_my_lists_template(self):
@@ -157,6 +167,16 @@ class MyListsTest(TestCase):
         correct_user = User.objects.create(email='a@b.com')
         response = self.client.get('/lists/users/a@b.com/')
         self.assertEqual(response.context['owner'], correct_user)
+
+    def test_shared_lists_appear_in_my_lists(self):
+        _list = List.objects.create()
+        Item.objects.create(text="item 1", list=_list)
+        _user = User.objects.create(email='a@b.com')
+        _list.shared_with.add('a@b.com')
+        response = self.client.get('/lists/users/a@b.com/')
+
+        self.assertContains(response,"item 1")
+     
 
 @patch('lists.views.NewListForm')  
 class NewListViewUnitTest(unittest.TestCase):  
@@ -208,8 +228,36 @@ class NewListViewUnitTest(unittest.TestCase):
         new_list(self.request)
         self.assertFalse(mock_form.save.called)
 
+class ShareListViewTest(TestCase):       
+    def test_post_redirects_to_lists_page(self):
+        _list = List.objects.create()
+        _user = User.objects.create(email='a@b.com')
+        response = self.client.post(
+            f'/lists/{_list.id}/share',
+            data={"share_email":'a@b.com'}
+        )
         
+        self.assertRedirects(response, f'/lists/{_list.id}/')
 
+    def test_share_email_is_saved(self):
+        _list = List.objects.create()
+        _user = User.objects.create(email='a@b.com')
+        response = self.client.post(
+            f'/lists/{_list.id}/share', 
+            data={"share_email":'a@b.com'})
+        self.assertIn(_user, _list.shared_with.all())
+
+    def test_share_email_appears_in_the_shared_list(self):
+        _list = List.objects.create()
+        _user = User.objects.create(email='a@b.com')
+        _list.shared_with.add('a@b.com')
+        response = self.client.get(f'/lists/{_list.id}/')
+
+        self.assertContains(response,"a@b.com")
+
+    
+        
+        
 
 
     

@@ -21,8 +21,6 @@ class ItemForm(forms.models.ModelForm):
             'text' : {'required' : EMPTY_ITEM_ERROR}
         }
 
-    
-
 
 class NewListForm(ItemForm):
 
